@@ -11,8 +11,7 @@ require 'spork'
 # The Spork.prefork block is run only once when the spork server is started.
 # You typically want to place most of your (slow) initializer code in here, in
 # particular, require'ing any 3rd-party gems that you don't normally modify
-# during development.
-#
+
 # The Spork.each_run block is run each time you run your specs.  In case you
 # need to load files that tend to change during development, require them here.
 # With Rails, your application modules are loaded automatically, so sometimes
@@ -61,6 +60,7 @@ RSpec.configure do |config|
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.include Rails.application.routes.url_helpers
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

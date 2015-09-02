@@ -58,6 +58,13 @@ describe "Authentification" do
       describe "for non-signed-in users" do
         let(:user){ FactoryGirl.create(:user)}
 
+        describe " confirm profile and settings dont exist" do
+          subject { page}
+          before{visit root_path}
+          it {should_not have_content("Profile")}
+          it {should_not have_content("Settings")}
+        end
+
          describe "when attempting to visit a protected page" do
         before do
           visit edit_user_path(user)
@@ -102,6 +109,17 @@ describe "Authentification" do
 
         describe "submitting a DELETE request to the Users#destory action" do
           before {delete user_path(user)}
+          specify{expect(response).to redirect_to(root_path)}
+        end
+      end
+
+      describe "as admin user" do
+        let(:admin_user){FactoryGirl.create(:user)}
+
+        before{ sign_in admin_user, no_capybara: true}
+
+        describe "submitting a self-DELETE request to the Users#destory action" do
+          before {delete user_path(:admin_user)}
           specify{expect(response).to redirect_to(root_path)}
         end
       end
